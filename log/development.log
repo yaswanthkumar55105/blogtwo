@@ -1,0 +1,1131 @@
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (98.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (74.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreatePosts (20200506191408)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200506191408"]]
+  [1m[35m (68.0ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateComments (20200506191559)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_2fd19c0db7"
+FOREIGN KEY ("post_id")
+  REFERENCES "posts" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE  INDEX "index_comments_on_post_id" ON "comments" ("post_id")[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200506191559"]]
+  [1m[35m (62.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-05-06 19:18:27.266532"], ["updated_at", "2020-05-06 19:18:27.266532"]]
+  [1m[35m (61.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+Started GET "/posts" for ::1 at 2020-05-07 00:53:12 +0530
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 2956ms (Views: 2905.1ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/posts/new" for ::1 at 2020-05-07 00:55:05 +0530
+Processing by PostsController#new as HTML
+  Rendering posts/new.html.erb within layouts/application
+  Rendered posts/_form.html.erb (305.8ms)
+  Rendered posts/new.html.erb within layouts/application (335.8ms)
+Completed 200 OK in 556ms (Views: 509.6ms | ActiveRecord: 2.0ms)
+
+
+Started POST "/posts" for ::1 at 2020-05-07 00:57:17 +0530
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"qPGnaBwz/S573jxc0vOTG85wtyYhvEERSFxIWLZVsLFmib2Ws5ppajBLV0Rp/MSORY086Q1sH3uoG6gsmyL75A==", "post"=>{"title"=>"Cloud-based Widgets", "body"=>"Blah, blah, blah"}, "commit"=>"Create Post"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Cloud-based Widgets"], ["body", "Blah, blah, blah"], ["created_at", "2020-05-06 19:27:17.293493"], ["updated_at", "2020-05-06 19:27:17.293493"]]
+  [1m[35m (73.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/1
+Completed 302 Found in 98ms (ActiveRecord: 75.0ms)
+
+
+Started GET "/posts/1" for ::1 at 2020-05-07 00:57:17 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (3.0ms)
+Completed 200 OK in 273ms (Views: 166.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 00:58:07 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 180ms (Views: 148.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts/1" for ::1 at 2020-05-07 00:58:55 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (3.0ms)
+Completed 200 OK in 255ms (Views: 217.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 00:58:58 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 177ms (Views: 146.5ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 00:59:34 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (2.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  Rendered comments/index.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 270ms (Views: 159.7ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-07 01:00:37 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (4.0ms)
+  Rendered comments/new.html.erb within layouts/application (35.0ms)
+Completed 200 OK in 220ms (Views: 180.0ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-07 01:01:05 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"eiUR0aVvvz5GbYfs+qL6S3PYjafFq2yAEvMMwG7yHiu3WRol6rEofFUgLqdtgVSKLgfPyhHhKsK2zaO9aLHexg==", "comment"=>{"post_id"=>"1", "body"=>"Great idea!"}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 1], ["body", "Great idea!"], ["created_at", "2020-05-06 19:31:05.617558"], ["updated_at", "2020-05-06 19:31:05.617558"]]
+  [1m[35m (57.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/1
+Completed 302 Found in 276ms (ActiveRecord: 58.0ms)
+
+
+Started GET "/comments/1" for ::1 at 2020-05-07 01:01:05 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 192ms (Views: 153.3ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:01:10 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 179ms (Views: 148.4ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-07 01:01:15 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (3.0ms)
+  Rendered comments/new.html.erb within layouts/application (33.0ms)
+Completed 200 OK in 205ms (Views: 175.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-07 01:01:47 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Ez8dg3oEpNGp5KMzlO9g46HyaR4cPeUvYP5ZUvL8h1XeQxZ3Ndozk7qpCngDzM4i/C0rc8h3o23EwPYv9L9HuA==", "comment"=>{"post_id"=>"1", "body"=>"Are they secure?"}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35mSQL (28.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 1], ["body", "Are they secure?"], ["created_at", "2020-05-06 19:31:47.238934"], ["updated_at", "2020-05-06 19:31:47.238934"]]
+  [1m[35m (108.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/2
+Completed 302 Found in 154ms (ActiveRecord: 137.0ms)
+
+
+Started GET "/comments/2" for ::1 at 2020-05-07 01:01:47 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 194ms (Views: 159.1ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:01:51 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (13.0ms)
+Completed 200 OK in 185ms (Views: 155.3ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 01:02:03 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 199ms (Views: 162.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts/new" for ::1 at 2020-05-07 01:02:42 +0530
+Processing by PostsController#new as HTML
+  Rendering posts/new.html.erb within layouts/application
+  Rendered posts/_form.html.erb (3.0ms)
+  Rendered posts/new.html.erb within layouts/application (33.0ms)
+Completed 200 OK in 208ms (Views: 177.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/posts" for ::1 at 2020-05-07 01:04:02 +0530
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"4OmRFXnihmCOdyP9j4Wmvvn63fmApZpH37539tp0xv4ukYvr1ksSJMXiSOU0ivErcgdWNqx1xC0/+ZeC9wONqw==", "post"=>{"title"=>"Big-data Nano Widgets", "body"=>"Blab, blab, blab"}, "commit"=>"Create Post"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (43.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Big-data Nano Widgets"], ["body", "Blab, blab, blab"], ["created_at", "2020-05-06 19:34:02.915219"], ["updated_at", "2020-05-06 19:34:02.915219"]]
+  [1m[35m (129.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/2
+Completed 302 Found in 186ms (ActiveRecord: 171.9ms)
+
+
+Started GET "/posts/2" for ::1 at 2020-05-07 01:04:03 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 189ms (Views: 154.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 01:04:07 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (4.0ms)
+Completed 200 OK in 179ms (Views: 148.6ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:04:18 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (14.0ms)
+Completed 200 OK in 221ms (Views: 179.3ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 01:04:25 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 205ms (Views: 169.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:04:34 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (16.0ms)
+Completed 200 OK in 214ms (Views: 173.4ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-07 01:04:38 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (3.0ms)
+  Rendered comments/new.html.erb within layouts/application (34.0ms)
+Completed 200 OK in 213ms (Views: 181.8ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-07 01:05:02 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"aWGbZiQss7Zy0ausuD7kvT2ZWvnCSx2WB17X6L0eldGkHZCSa/Ik9GGcAucvHUp8YEYYlBYBW9SjYHiVu11VPA==", "comment"=>{"post_id"=>"2", "body"=>"I like Java"}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (20.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 2], ["body", "I like Java"], ["created_at", "2020-05-06 19:35:02.945894"], ["updated_at", "2020-05-06 19:35:02.945894"]]
+  [1m[35m (108.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/3
+Completed 302 Found in 146ms (ActiveRecord: 128.9ms)
+
+
+Started GET "/comments/3" for ::1 at 2020-05-07 01:05:03 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 196ms (Views: 160.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:05:09 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (17.0ms)
+Completed 200 OK in 190ms (Views: 158.3ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-07 01:05:20 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (3.0ms)
+  Rendered comments/new.html.erb within layouts/application (34.0ms)
+Completed 200 OK in 211ms (Views: 180.0ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-07 01:06:58 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"YVcrUSCb6SLRHl1UTdKCNV0xDUeMZAVSC8GWwacqUPKsKyClb0V+YMJT9B/a8Sz0AO5PKlguQxCv/zm8oWmQHw==", "comment"=>{"post_id"=>"2", "body"=>"LOL, OMG, IDK"}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (17.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 2], ["body", "LOL, OMG, IDK"], ["created_at", "2020-05-06 19:36:58.956821"], ["updated_at", "2020-05-06 19:36:58.956821"]]
+  [1m[35m (135.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/4
+Completed 302 Found in 177ms (ActiveRecord: 153.0ms)
+
+
+Started GET "/comments/4" for ::1 at 2020-05-07 01:06:59 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 203ms (Views: 166.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-07 01:08:06 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (23.0ms)
+Completed 200 OK in 198ms (Views: 165.0ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-07 01:15:21 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 206ms (Views: 162.5ms | ActiveRecord: 1.0ms)
+
+
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "comments"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (147.9ms)[0m  [1m[35mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (145.0ms)[0m  [1m[35mCREATE  INDEX "index_comments_on_post_id" ON "comments" ("post_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "posts"[0m
+  [1m[35m (108.9ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (87.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (95.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20200506191559)[0m
+  [1m[35m (62.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20200506191408);
+
+[0m
+  [1m[35m (120.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-05-08 22:22:21.698050"], ["updated_at", "2020-05-08 22:22:21.698050"]]
+  [1m[35m (66.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "comments"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (101.0ms)[0m  [1m[35mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (68.0ms)[0m  [1m[35mCREATE  INDEX "index_comments_on_post_id" ON "comments" ("post_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "posts"[0m
+  [1m[35m (85.0ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (60.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (101.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20200506191559)[0m
+  [1m[35m (70.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20200506191408);
+
+[0m
+  [1m[35m (122.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-05-08 22:22:22.421804"], ["updated_at", "2020-05-08 22:22:22.421804"]]
+  [1m[35m (71.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = ?, "updated_at" = ? WHERE "ar_internal_metadata"."key" = ?[0m  [["value", "test"], ["updated_at", "2020-05-08 22:22:22.503774"], ["key", "environment"]]
+  [1m[35m (91.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "comments"[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (972.7ms)[0m  [1m[35mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (58.0ms)[0m  [1m[35mCREATE  INDEX "index_comments_on_post_id" ON "comments" ("post_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "posts"[0m
+  [1m[35m (60.0ms)[0m  [1m[35mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "body" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (96.0ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (58.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20200506191559)[0m
+  [1m[35m (63.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20200506191408);
+
+[0m
+  [1m[35m (82.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (26.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2020-05-08 22:23:13.658056"], ["updated_at", "2020-05-08 22:23:13.658056"]]
+  [1m[35m (72.9ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (3.0ms)[0m  [1m[33mUPDATE "ar_internal_metadata" SET "value" = ?, "updated_at" = ? WHERE "ar_internal_metadata"."key" = ?[0m  [["value", "test"], ["updated_at", "2020-05-08 22:23:13.775030"], ["key", "environment"]]
+  [1m[35m (108.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (2.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+  [1m[36mPost Load (5.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (20.1ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Widget Preview"], ["body", "We'll be unveiling our latest widgets at the International Widget Conference"], ["created_at", "2020-05-08 22:41:52.653726"], ["updated_at", "2020-05-08 22:41:52.653726"]]
+  [1m[35m (64.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20200508224421)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200508224421"]]
+  [1m[35m (65.0ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddUseridToPosts (20200508224556)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (20.0ms)[0m  [1m[35mALTER TABLE "posts" ADD "user_id" integer[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE  INDEX "index_posts_on_user_id" ON "posts" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200508224556"]]
+  [1m[35m (77.0ms)[0m  [1m[36mcommit transaction[0m
+Migrating to AddUseridToComments (20200508224733)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (2.0ms)[0m  [1m[35mALTER TABLE "comments" ADD "user_id" integer[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE  INDEX "index_comments_on_user_id" ON "comments" ("user_id")[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20200508224733"]]
+  [1m[35m (60.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.0ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_user_id' AND type='index'
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_posts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_posts_on_user_id' AND type='index'
+[0m
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_comments_on_post_id' AND type='index'
+[0m
+  [1m[35m (0.0ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_posts_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_posts_on_user_id' AND type='index'
+[0m
+Started GET "/" for ::1 at 2020-05-09 04:20:10 +0530
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb (7.0ms)
+Completed 200 OK in 280ms (Views: 73.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users" for ::1 at 2020-05-09 04:20:48 +0530
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (8.0ms)
+Completed 200 OK in 1412ms (Views: 1369.8ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:21:09 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (2.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (25.0ms)
+Completed 200 OK in 260ms (Views: 213.4ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/posts/new" for ::1 at 2020-05-09 04:21:18 +0530
+Processing by PostsController#new as HTML
+  Rendering posts/new.html.erb within layouts/application
+  Rendered posts/_form.html.erb (46.0ms)
+  Rendered posts/new.html.erb within layouts/application (78.0ms)
+Completed 200 OK in 271ms (Views: 239.7ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/posts" for ::1 at 2020-05-09 04:21:47 +0530
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"2zJIet06lSucazVUsLSd/2Vy5iNH8sSa4wUFD+p5j7cVSlKEcpMBb9f+XkwLu8pq7o9t7GsimvADQuV7xw7E4g==", "post"=>{"title"=>"Cloud-based Widgets", "body"=>"Blah, blah, blah"}, "commit"=>"Create Post"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (45.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Cloud-based Widgets"], ["body", "Blah, blah, blah"], ["created_at", "2020-05-08 22:51:47.770856"], ["updated_at", "2020-05-08 22:51:47.770856"]]
+  [1m[35m (1073.7ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/2
+Completed 302 Found in 1138ms (ActiveRecord: 1118.7ms)
+
+
+Started GET "/posts/2" for ::1 at 2020-05-09 04:21:48 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 253ms (Views: 205.3ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts/2/edit" for ::1 at 2020-05-09 04:21:55 +0530
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/edit.html.erb within layouts/application
+  Rendered posts/_form.html.erb (4.0ms)
+  Rendered posts/edit.html.erb within layouts/application (35.0ms)
+Completed 200 OK in 248ms (Views: 213.7ms | ActiveRecord: 1.0ms)
+
+
+Started PATCH "/posts/2" for ::1 at 2020-05-09 04:22:05 +0530
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"0Cl+Uob7nYcT/j4I57TScyDaREl+DFncRSCwEIzhoEADnO033sxudBgeGbruEa/uQ8oo4+g8+KRDnhZ00ivMjg==", "post"=>{"title"=>"Cloud based Widgets", "body"=>"Blah, blah, blah"}, "commit"=>"Update Post", "id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (9.0ms)[0m  [1m[33mUPDATE "posts" SET "title" = ?, "updated_at" = ? WHERE "posts"."id" = ?[0m  [["title", "Cloud based Widgets"], ["updated_at", "2020-05-08 22:52:05.963008"], ["id", 2]]
+  [1m[35m (56.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/2
+Completed 302 Found in 85ms (ActiveRecord: 66.0ms)
+
+
+Started GET "/posts/2" for ::1 at 2020-05-09 04:22:06 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (3.0ms)
+Completed 200 OK in 218ms (Views: 180.8ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts/2/edit" for ::1 at 2020-05-09 04:22:09 +0530
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/edit.html.erb within layouts/application
+  Rendered posts/_form.html.erb (4.0ms)
+  Rendered posts/edit.html.erb within layouts/application (35.0ms)
+Completed 200 OK in 230ms (Views: 195.4ms | ActiveRecord: 0.0ms)
+
+
+Started PATCH "/posts/2" for ::1 at 2020-05-09 04:22:13 +0530
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"Xse+hlrdw8ZXrUwm6WDIiH9pDP3+WPx4RSBuThCQzd2Nci3jAuowNVxNa5TgxbUVHHlgV2hoXQBDnsgqTlqhEw==", "post"=>{"title"=>"Cloud-based Widgets", "body"=>"Blah, blah, blah"}, "commit"=>"Update Post", "id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (206.9ms)[0m  [1m[33mUPDATE "posts" SET "title" = ?, "updated_at" = ? WHERE "posts"."id" = ?[0m  [["title", "Cloud-based Widgets"], ["updated_at", "2020-05-08 22:52:13.513580"], ["id", 2]]
+  [1m[35m (123.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/2
+Completed 302 Found in 345ms (ActiveRecord: 330.9ms)
+
+
+Started GET "/posts/2" for ::1 at 2020-05-09 04:22:13 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 221ms (Views: 180.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:22:16 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 194ms (Views: 163.2ms | ActiveRecord: 1.0ms)
+
+
+Started DELETE "/posts/1" for ::1 at 2020-05-09 04:22:26 +0530
+Processing by PostsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"CrikEyhEoZyC24K7u012Yow8NcHoZth1h/6xGELfZkYikuesKpHVcfiLiy552vDK3bB9gBs2rwbcwqhmh6LEOQ==", "id"=>"1"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (351.9ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 1]]
+  [1m[35m (68.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts
+Completed 302 Found in 435ms (ActiveRecord: 420.8ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:22:26 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (2.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 228ms (Views: 191.8ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/posts/new" for ::1 at 2020-05-09 04:22:30 +0530
+Processing by PostsController#new as HTML
+  Rendering posts/new.html.erb within layouts/application
+  Rendered posts/_form.html.erb (3.0ms)
+  Rendered posts/new.html.erb within layouts/application (34.0ms)
+Completed 200 OK in 220ms (Views: 187.8ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/posts" for ::1 at 2020-05-09 04:22:51 +0530
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"cf5Ct44MOsHw7/z0d4bOHdI3xBBK36fjotH3DWCymyS/hlhJIaWuhbt6l+zMiZmIWcpP32YP+YlClhd5TcXQcQ==", "post"=>{"title"=>"Big-data Nano Widgets", "body"=>"Blab, blab, blab"}, "commit"=>"Create Post"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (58.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Big-data Nano Widgets"], ["body", "Blab, blab, blab"], ["created_at", "2020-05-08 22:52:52.023195"], ["updated_at", "2020-05-08 22:52:52.023195"]]
+  [1m[35m (90.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/3
+Completed 302 Found in 161ms (ActiveRecord: 148.0ms)
+
+
+Started GET "/posts/3" for ::1 at 2020-05-09 04:22:52 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 210ms (Views: 172.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:22:55 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 188ms (Views: 156.6ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts/new" for ::1 at 2020-05-09 04:23:04 +0530
+Processing by PostsController#new as HTML
+  Rendering posts/new.html.erb within layouts/application
+  Rendered posts/_form.html.erb (3.0ms)
+  Rendered posts/new.html.erb within layouts/application (35.0ms)
+Completed 200 OK in 221ms (Views: 189.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/posts" for ::1 at 2020-05-09 04:24:18 +0530
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"5ofOtZlXHcvNYrvb+wxRFm4tgAS5rXuOR+Ga9dBKKHMo/9RLNv6Jj4b30MNAAwaD5dALy5V9JeSnpnqB/T1jJg==", "post"=>{"title"=>"Widget Preview", "body"=>"We'll be unveiling our latest widgets at the International Widget Conference"}, "commit"=>"Create Post"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Widget Preview"], ["body", "We'll be unveiling our latest widgets at the International Widget Conference"], ["created_at", "2020-05-08 22:54:18.419593"], ["updated_at", "2020-05-08 22:54:18.419593"]]
+  [1m[35m (67.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts/4
+Completed 302 Found in 84ms (ActiveRecord: 69.0ms)
+
+
+Started GET "/posts/4" for ::1 at 2020-05-09 04:24:18 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 208ms (Views: 171.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:24:21 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 188ms (Views: 157.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts/3" for ::1 at 2020-05-09 04:24:23 +0530
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendering posts/show.html.erb within layouts/application
+  Rendered posts/show.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 186ms (Views: 152.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:24:26 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (7.0ms)
+Completed 200 OK in 188ms (Views: 157.3ms | ActiveRecord: 1.0ms)
+
+
+  [1m[36mPost Load (4.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" LIMIT ?[0m  [["LIMIT", 11]]
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "posts" ("title", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["title", "Web Application Development"], ["body", "Ruby on Rails, SQLlite, Git"], ["created_at", "2020-05-08 23:00:58.698852"], ["updated_at", "2020-05-08 23:00:58.698852"]]
+  [1m[35m (146.0ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for ::1 at 2020-05-09 04:33:39 +0530
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb (9.0ms)
+Completed 200 OK in 149ms (Views: 75.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users" for ::1 at 2020-05-09 04:34:08 +0530
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 570ms (Views: 522.7ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/users/new" for ::1 at 2020-05-09 04:34:16 +0530
+Processing by UsersController#new as HTML
+  Rendering users/new.html.erb within layouts/application
+  Rendered users/_form.html.erb (35.0ms)
+  Rendered users/new.html.erb within layouts/application (69.0ms)
+Completed 200 OK in 277ms (Views: 232.4ms | ActiveRecord: 3.0ms)
+
+
+Started POST "/users" for ::1 at 2020-05-09 04:34:25 +0530
+Processing by UsersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"iGt6fcXy2MmA7JMMI80BZWvbgGSiaTbM1pm++VPimUh13xw5WCjCXcqE5w0ra19YcPhgRSZdUeNuxSb9r4rzuw==", "user"=>{"first_name"=>"Meghana", "last_name"=>"Mutte"}, "commit"=>"Create User"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[32mINSERT INTO "users" ("first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["first_name", "Meghana"], ["last_name", "Mutte"], ["created_at", "2020-05-08 23:04:25.821245"], ["updated_at", "2020-05-08 23:04:25.821245"]]
+  [1m[35m (992.7ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/users/1
+Completed 302 Found in 1010ms (ActiveRecord: 994.7ms)
+
+
+Started GET "/users/1" for ::1 at 2020-05-09 04:34:26 +0530
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (3.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering users/show.html.erb within layouts/application
+  Rendered users/show.html.erb within layouts/application (5.0ms)
+Completed 200 OK in 273ms (Views: 209.0ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/users" for ::1 at 2020-05-09 04:34:30 +0530
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 213ms (Views: 176.7ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:35:27 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (22.0ms)
+Completed 200 OK in 266ms (Views: 222.9ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:35:42 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  Rendered comments/index.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 285ms (Views: 218.4ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-09 04:35:45 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (9.0ms)
+  Rendered comments/new.html.erb within layouts/application (41.0ms)
+Completed 200 OK in 258ms (Views: 212.8ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-09 04:36:05 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"IyV+5zT6dD9osYawz2uEohdiAqctWovs70xOq6HrakHuWXUTeyTjfXv8L/tYSCpjSr1AyvkQza5LcuHWp6iqrA==", "comment"=>{"post_id"=>"1", "body"=>"This is great!"}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (4.0ms)
+  Rendered comments/new.html.erb within layouts/application (40.0ms)
+Completed 200 OK in 277ms (Views: 229.0ms | ActiveRecord: 1.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-09 04:36:28 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"4HbJnLyxWVHkSoc+WRbCwgMT3xwvSU0l2DcU8VP1kzfIXIojvmQtvJ4ajqubgURqUp+XXdwZOlaDCw2PlogxSA==", "comment"=>{"post_id"=>"2", "body"=>"\"This is great!\""}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (28.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 2], ["body", "\"This is great!\""], ["created_at", "2020-05-08 23:06:28.561770"], ["updated_at", "2020-05-08 23:06:28.561770"]]
+  [1m[35m (107.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/1
+Completed 302 Found in 154ms (ActiveRecord: 135.0ms)
+
+
+Started GET "/comments/1" for ::1 at 2020-05-09 04:36:28 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (8.0ms)
+Completed 200 OK in 243ms (Views: 199.0ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:36:36 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (2.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (10.0ms)
+Completed 200 OK in 213ms (Views: 177.8ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/comments/1/edit" for ::1 at 2020-05-09 04:36:39 +0530
+Processing by CommentsController#edit as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering comments/edit.html.erb within layouts/application
+  Rendered comments/_form.html.erb (4.0ms)
+  Rendered comments/edit.html.erb within layouts/application (37.0ms)
+Completed 200 OK in 252ms (Views: 212.2ms | ActiveRecord: 0.0ms)
+
+
+Started PATCH "/comments/1" for ::1 at 2020-05-09 04:37:05 +0530
+Processing by CommentsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"yZmzp91Q3lCYKw6cB6SIo3pFIJgUR9lS1f7ogcrnZuoQauBqGkKxNRktoSy3OV3t/aHohkjbUaKBeHeJ+xjCRw==", "comment"=>{"post_id"=>"Cloud-based Widgets", "body"=>"\"This is great!\""}, "commit"=>"Update Comment", "id"=>"1"}
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 0], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  Rendering comments/edit.html.erb within layouts/application
+  Rendered comments/_form.html.erb (4.0ms)
+  Rendered comments/edit.html.erb within layouts/application (40.0ms)
+Completed 200 OK in 230ms (Views: 213.2ms | ActiveRecord: 2.0ms)
+
+
+Started PATCH "/comments/1" for ::1 at 2020-05-09 04:37:11 +0530
+Processing by CommentsController#update as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"2Srg8BcWzNnP6n8KPzKErqxdopDam+vgCBPGHfcgbNjxAKNPFcO4NLW6dp/9pQIG/dHq0SnLnJNTL99jMl3Opw==", "comment"=>{"post_id"=>"2", "body"=>"\"This is great!\""}, "commit"=>"Update Comment", "id"=>"1"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/1
+Completed 302 Found in 17ms (ActiveRecord: 2.0ms)
+
+
+Started GET "/comments/1" for ::1 at 2020-05-09 04:37:11 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (8.0ms)
+Completed 200 OK in 217ms (Views: 179.9ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:37:14 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (8.0ms)
+Completed 200 OK in 198ms (Views: 165.1ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-09 04:37:18 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (3.0ms)
+  Rendered comments/new.html.erb within layouts/application (35.0ms)
+Completed 200 OK in 227ms (Views: 194.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-09 04:37:58 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"S+Rd04IiG6fzbBALH02bcPfoVNgRfm+xo/KuFOVZ/NeGmFYnzfyM5eAhuUCIbjWxqjcWtcU0KfMHzAFp4xo8Og==", "comment"=>{"post_id"=>"2", "body"=>"\"Is it secure?\""}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (45.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 2], ["body", "\"Is it secure?\""], ["created_at", "2020-05-08 23:07:58.747768"], ["updated_at", "2020-05-08 23:07:58.747768"]]
+  [1m[35m (110.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/2
+Completed 302 Found in 173ms (ActiveRecord: 155.9ms)
+
+
+Started GET "/comments/2" for ::1 at 2020-05-09 04:37:58 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"2"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (8.0ms)
+Completed 200 OK in 228ms (Views: 187.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:38:11 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (2.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (13.0ms)
+Completed 200 OK in 210ms (Views: 174.3ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-09 04:38:12 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (4.0ms)
+  Rendered comments/new.html.erb within layouts/application (37.0ms)
+Completed 200 OK in 235ms (Views: 202.4ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-09 04:38:31 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"2JmyWX46snR6V7MCWLRsqVwWFvQVO+QEvfejidURQ7oV5bmtMeQlNmkaGknPl8JoAclUmcFxokYZyQz001KDVw==", "comment"=>{"post_id"=>"3", "body"=>"\"I like Java\""}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (16.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 3], ["body", "\"I like Java\""], ["created_at", "2020-05-08 23:08:31.338285"], ["updated_at", "2020-05-08 23:08:31.338285"]]
+  [1m[35m (139.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/3
+Completed 302 Found in 173ms (ActiveRecord: 156.0ms)
+
+
+Started GET "/comments/3" for ::1 at 2020-05-09 04:38:31 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"3"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 225ms (Views: 181.5ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:38:40 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (16.0ms)
+Completed 200 OK in 218ms (Views: 179.0ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/comments/new" for ::1 at 2020-05-09 04:38:43 +0530
+Processing by CommentsController#new as HTML
+  Rendering comments/new.html.erb within layouts/application
+  Rendered comments/_form.html.erb (5.0ms)
+  Rendered comments/new.html.erb within layouts/application (44.0ms)
+Completed 200 OK in 248ms (Views: 214.5ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/comments" for ::1 at 2020-05-09 04:39:26 +0530
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"fAtmOjwl7zXxT6cAVhcWpXYsvttAFdtIJkLWCxix4cixd23Oc/t4d+ICDkvBNLhkK/P8tpRfnQqCfHl2HvIhJQ==", "comment"=>{"post_id"=>"3", "body"=>"\"LOL, OMG, IDK\""}, "commit"=>"Create Comment"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (15.0ms)[0m  [1m[32mINSERT INTO "comments" ("post_id", "body", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["post_id", 3], ["body", "\"LOL, OMG, IDK\""], ["created_at", "2020-05-08 23:09:26.150657"], ["updated_at", "2020-05-08 23:09:26.150657"]]
+  [1m[35m (112.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/comments/4
+Completed 302 Found in 145ms (ActiveRecord: 128.0ms)
+
+
+Started GET "/comments/4" for ::1 at 2020-05-09 04:39:26 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (4.0ms)
+Completed 200 OK in 222ms (Views: 184.0ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:39:28 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (24.0ms)
+Completed 200 OK in 217ms (Views: 183.6ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments/4" for ::1 at 2020-05-09 04:39:31 +0530
+Processing by CommentsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mComment Load (0.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  Rendering comments/show.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/show.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 213ms (Views: 176.5ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:39:33 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (20.0ms)
+Completed 200 OK in 226ms (Views: 191.8ms | ActiveRecord: 3.0ms)
+
+
+  [1m[36mComment Load (6.0ms)[0m  [1m[34mSELECT  "comments".* FROM "comments" LIMIT ?[0m  [["LIMIT", 11]]
+Started GET "/" for ::1 at 2020-05-09 04:41:25 +0530
+  [1m[35m (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered C:/RailsInstaller/Ruby2.3.3/lib/ruby/gems/2.3.0/gems/railties-5.1.7/lib/rails/templates/rails/welcome/index.html.erb (9.0ms)
+Completed 200 OK in 179ms (Views: 90.0ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/users" for ::1 at 2020-05-09 04:41:54 +0530
+Processing by UsersController#index as HTML
+  Rendering users/index.html.erb within layouts/application
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered users/index.html.erb within layouts/application (26.0ms)
+Completed 200 OK in 583ms (Views: 535.5ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:42:07 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (20.0ms)
+Completed 200 OK in 248ms (Views: 198.7ms | ActiveRecord: 4.0ms)
+
+
+Started DELETE "/posts/5" for ::1 at 2020-05-09 04:42:12 +0530
+Processing by PostsController#destroy as HTML
+  Parameters: {"authenticity_token"=>"LKZ9EzJFGSSiGL2VFcp5RalNiu4KyWlb5lHf7gHA85EEjD6sMJBtydhItADXXf/t+MHCr/mZHii9bcaQxL1R7g==", "id"=>"5"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (2.0ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 5]]
+  [1m[35m (153.0ms)[0m  [1m[36mcommit transaction[0m
+Redirected to http://localhost:3000/posts
+Completed 302 Found in 181ms (ActiveRecord: 154.9ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:42:13 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (1.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (6.0ms)
+Completed 200 OK in 259ms (Views: 218.2ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/comments" for ::1 at 2020-05-09 04:42:20 +0530
+Processing by CommentsController#index as HTML
+  Rendering comments/index.html.erb within layouts/application
+  [1m[36mComment Load (1.0ms)[0m  [1m[34mSELECT "comments".* FROM "comments"[0m
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE Post Load (0.0ms)[0m  [1m[34mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  Rendered comments/index.html.erb within layouts/application (65.0ms)
+Completed 200 OK in 301ms (Views: 245.0ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/posts" for ::1 at 2020-05-09 04:42:34 +0530
+Processing by PostsController#index as HTML
+  Rendering posts/index.html.erb within layouts/application
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (9.0ms)
+Completed 200 OK in 260ms (Views: 215.6ms | ActiveRecord: 0.0ms)
+
+
